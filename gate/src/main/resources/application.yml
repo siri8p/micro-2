@@ -1,0 +1,37 @@
+#spring.application.name=Gate
+
+spring:
+  application:
+    name: Gate
+  main:
+    web-application-type: reactive
+  boot:
+    admin:
+      client:
+        url: http://localhost:1111/
+  eureka:
+    client:
+      service-url:
+        defaultZone: http://localhost:8761/eureka/
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: Welcome-Service
+              uri: lb://WELCOME-SERVICE
+              predicates:
+                - Path=/welcome
+            - id: Greet
+              uri: lb://GREET
+              predicates:
+                - Path=/greet
+
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+
+server:
+  port: 3334
